@@ -88,65 +88,99 @@ function CharacterSheetForm() {
     race: "",
     level: 0,
     physique: {
-      agility: 0,
-      strength: 0,
-      dexterity: 0,
-      fortitude: 0,
-      meleeCombat: 0,
-      rangedCombat: 0,
-      athletics: 0,
-      acrobatics: 0
+      Agility: 0,
+      Strength: 0,
+      Dexterity: 0,
+      Fortitude: 0,
+      MeleeCombat: 0,
+      RangedCombat: 0,
+      Athletics: 0,
+      Acrobatics: 0
     },
     knowledge: {
-      history: 0,
-      intuition: 0,
-      nature: 0,
-      jurisprudence: 0,
-      medicine: 0,
-      technology: 0,
-      theology: 0
+      History: 0,
+      Intuition: 0,
+      Nature: 0,
+      Jurisprudence: 0,
+      Medicine: 0,
+      Technology: 0,
+      Theology: 0
     },
     exploration: {
-      stealth: 0,
-      investigation: 0,
-      tracking: 0,
-      perception: 0,
-      survival: 0,
-      animalHandling: 0,
-      navigation: 0,
-      traps: 0
+      Stealth: 0,
+      Investigation: 0,
+      Tracking: 0,
+
+      Perception: 0,
+      Survival: 0,
+      AnimalHandling: 0,
+      Navigation: 0,
+      Traps: 0
     },
     arcana: {
-      arcana: 0,
-      occultism: 0,
-      alchemy: 0,
-      ritualism: 0,
-      magicItemAppraisal: 0,
-      magicTrapIdentification: 0,
-      arcaneCombat: 0
+      Arcanolgy: 0,
+      Occultism: 0,
+      Alchemy: 0,
+      Ritualism: 0,
+      MagicItemId: 0,
+      MagicTrapId: 0,
+      ArcaneCombat: 0
     },
     social: {
-      persuasion: 0,
-      deception: 0,
-      negotiation: 0,
-      seduction: 0,
-      intimidation: 0,
-      performance: 0
+      Persuasion: 0,
+      Deception: 0,
+      Negotiation: 0,
+      Seduction: 0,
+      Intimidation: 0,
+      Performance: 0
+    },
+    conditions: {
+      Exhausted: 0,
+      Freezing: 0,
+      Burning: 0
+    },
+    booleanConditions: {
+      Paralized: "false",
+      Poinsoned: "false",
+      Restrained: "false",
+      Prone: "false",
+      Deaf: "false",
+      Bleeding: "false",
+      stunned: "false",
+      blind: "false",
+      Obscured: "false",
+      Hidden: "false",
+      Suprised: "false",
+      Freightened: "false",
+      Dying: "false",
+      Slow: "false"
     },
     proficiencies: []
   });
 
-  useEffect(() => {
-    const savedCharacter = JSON.parse(localStorage.getItem("character"));
-    if (savedCharacter) {
-      setCharacter(savedCharacter);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const savedCharacter = JSON.parse(localStorage.getItem("character"));
+  //   if (savedCharacter) {
+  //     setCharacter(savedCharacter);
+  //   }
+  // }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setCharacter({ ...character, [name]: value });
   };
+  const handleAbilitieChange = (event) => {
+    const { name, value } = event.target;
+    const category = event.target.getAttribute("data-category"); // adicionando um atributo data- na sua tag para identificar a categoria da habilidade
+    setCharacter({
+      ...character,
+      [category]: {
+        ...character[category],
+        [name]: value
+      }
+    });
+  };
+  
 
   const handleProficiencyChange = (index, event) => {
     const { value } = event.target;
@@ -171,8 +205,11 @@ function CharacterSheetForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    localStorage.setItem("character", JSON.stringify(character));
-    console.log("Character saved to local storage:", character);
+    localStorage.setItem(
+      `${character.name} ${character.class}`,
+      JSON.stringify(character)
+    );
+    alert("Personagem criado com sucesso!")
   };
 
   return (
@@ -181,10 +218,11 @@ function CharacterSheetForm() {
       <div className="boxHeader">
         <div className="inputAbilities">
           <label className="inputLabelHeader">
-            <text-pt>Nome:</text-pt>
+            <text-en>Name:</text-en>
           </label>
           <input
             type="text"
+            required
             name="name"
             value={character.name}
             className="inputBoxHeader"
@@ -196,10 +234,11 @@ function CharacterSheetForm() {
         <div className="inputAbilities" style={{ margin: "0px" }}>
           <div className="inputAbilities">
             <label className="inputLabelHeader">
-              <text-pt>Classe:</text-pt>{" "}
+              <text-en>Class:</text-en>{" "}
             </label>
             <input
               type="text"
+              required
               name="class"
               value={character.class}
               className="inputBoxHeader"
@@ -210,8 +249,7 @@ function CharacterSheetForm() {
           </div>
           <div className="inputAbilities" style={{ margin: "0px" }}>
             <label className="inputLabelHeader">
-              {" "}
-              <text-pt>Especialização: </text-pt>
+              <text-en>Special.: </text-en>
             </label>
             <input
               style={{ margin: "0px" }}
@@ -227,10 +265,11 @@ function CharacterSheetForm() {
         </div>
         <div className="inputAbilities">
           <label className="inputLabelHeader">
-            <text-pt>Raça:</text-pt>
+            <text-en>Especie:</text-en>
           </label>
           <input
             type="text"
+            required
             name="race"
             value={character.race}
             className="inputBoxHeader"
@@ -242,11 +281,12 @@ function CharacterSheetForm() {
         <div className="inputAbilities" style={{ margin: "0px" }}>
           <div className="inputAbilities">
             <label className="inputLabelHeader">
-              <text-pt>Nível:</text-pt>{" "}
+              <text-en>Level:</text-en>{" "}
             </label>
             <input
               type="number"
-              min={0}
+              min={1}
+              
               name="level"
               value={character.level}
               className="inputBoxHeader"
@@ -257,7 +297,7 @@ function CharacterSheetForm() {
           </div>
           <div className="inputAbilities" style={{ margin: "0px" }}>
             <label className="inputLabelHeader">
-              <text-pt>Exp: </text-pt>
+              <text-en>Exp: </text-en>
             </label>
             <input
               style={{ margin: "0px" }}
@@ -277,21 +317,21 @@ function CharacterSheetForm() {
       <div className="container">
         <div className="box">
           {/* Físico */}
-          <h2>Físico</h2>
+          <h2>Physique</h2>
           {Object.entries(character.physique).map(([key, value]) => (
             <div className="inputAbilities" key={key}>
               <label className="inputLabel" key={key}>
-                {" "}
-                <text-pt>{key}:</text-pt>
+                <text-en>{key}:</text-en>
               </label>
               <input
                 type="number"
                 min={0}
-                name={`physique.${key}`}
+                name={`${key}`}
+                data-category="physique"
                 value={character.physique.key}
                 className="inputBox"
                 onChange={(e) => {
-                  handleChange(e);
+                  handleAbilitieChange(e);
                 }}
               />
             </div>
@@ -299,20 +339,21 @@ function CharacterSheetForm() {
         </div>
         <div className="box">
           {/* Conhecimento */}
-          <h2>Conhecimento</h2>
+          <h2>Knowledge</h2>
           {Object.entries(character.knowledge).map(([key, value]) => (
             <div className="inputAbilities" key={key}>
               <label className="inputLabel" key={key}>
-                <text-pt>{key}:</text-pt>
+                <text-en>{key}:</text-en>
               </label>
               <input
                 type="number"
                 min={0}
-                name={`knowledge.${key}`}
+                name={`.${key}`}
                 value={character.knowledge.key}
+                data-category="knowledge"
                 className="inputBox"
                 onChange={(e) => {
-                  handleChange(e);
+                  handleAbilitieChange(e);
                 }}
               />
             </div>
@@ -321,20 +362,21 @@ function CharacterSheetForm() {
 
         <div className="box">
           {/* Exploração */}
-          <h2>Exploração</h2>
+          <h2>Exploration</h2>
           {Object.entries(character.exploration).map(([key, value]) => (
             <div className="inputAbilities" key={key}>
               <label className="inputLabel" key={key}>
-                <text-pt>{key}:</text-pt>
+                <text-en>{key}:</text-en>
               </label>
               <input
                 type="number"
                 min={0}
-                name={`exploration.${key}`}
+                name={`${key}`}
                 value={character.exploration.key}
                 className="inputBox"
+                data-category="exploration"
                 onChange={(e) => {
-                  handleChange(e);
+                  handleAbilitieChange(e);
                 }}
               />
             </div>
@@ -342,21 +384,21 @@ function CharacterSheetForm() {
         </div>
         <div className="box">
           {/* Arcano */}
-          <h2>Arcano</h2>
+          <h2>Arcane</h2>
           {Object.entries(character.arcana).map(([key, value]) => (
             <div className="inputAbilities" key={key}>
               <label className="inputLabel" key={key}>
-                {" "}
-                <text-pt>{key}:</text-pt>
+                <text-en>{key}:</text-en>
               </label>
               <input
                 type="number"
                 min={0}
-                name={`arcana.${key}`}
+                name={`${key}`}
                 value={character.arcana.key}
                 className="inputBox"
+                data-category="arcana"
                 onChange={(e) => {
-                  handleChange(e);
+                  handleAbilitieChange(e);
                 }}
               />
             </div>
@@ -370,17 +412,57 @@ function CharacterSheetForm() {
           {Object.entries(character.social).map(([key, value]) => (
             <div className="inputAbilities" key={key}>
               <label className="inputLabel" key={key}>
-                {" "}
-                <text-pt>{key}:</text-pt>
+                <text-en>{key}:</text-en>
               </label>
               <input
                 type="number"
                 min={0}
-                name={`social.${key}`}
+                name={`${key}`}
                 value={character.social.key}
+                data-category="social"
                 className="inputBox"
                 onChange={(e) => {
-                  handleChange(e);
+                  handleAbilitieChange(e);
+                }}
+              />
+            </div>
+          ))}
+        </div>
+        {/* Conditions */}
+
+        <div className="box conditions">
+          <h2 style={{width:'100%', textAlign:'center'}}>Conditions</h2>
+          {Object.entries(character.conditions).map(([key, value]) => (
+            <div className="inputAbilities" key={key}>
+              <label className="inputLabel" key={key}>
+                <text-en>{key}:</text-en>
+              </label>
+              <input
+                type="number"
+                min={0}
+                name={`${key}`}
+                value={character.conditions.key}
+                data-category="conditions"
+                className="inputBox"
+                onChange={(e) => {
+                  handleAbilitieChange(e);
+                }}
+              />
+            </div>
+          ))}
+          {Object.entries(character.booleanConditions).map(([key, value]) => (
+            <div className="inputAbilities" key={key}>
+              <label className="inputLabel" key={key}>
+                <text-en>{key}:</text-en>
+              </label>
+              <input
+                type="checkbox"
+                name={`${key}`}
+                value={true}
+                data-category="booleanConditions"
+                className="inputBox"
+                onChange={(e) => {
+                  handleAbilitieChange(e);
                 }}
               />
             </div>
@@ -391,12 +473,12 @@ function CharacterSheetForm() {
       <div className="container">
         {character.proficiencies.map((proficiency, index) => (
           <div key={index}>
-            <h2>Escolha uma Proficiência:</h2>
+            <h2>Choose a Proficiency:</h2>
             <select
               value={proficiency.name}
               onChange={(e) => handleProficiencyChange(index, e)}
             >
-              <option value="">Nenhuma</option>
+              <option value="">None</option>
               {proficiencyOptions.map((option, i) => (
                 <option key={i} value={option.topic}>
                   {option.topic}
@@ -404,7 +486,9 @@ function CharacterSheetForm() {
               ))}
             </select>
             <input
-              type="text"
+              type="number"
+              min={1}
+              style={{maxWidth:'50px', marginLeft:'8px'}}
               value={proficiency.level}
               onChange={(e) => handleProficiencyLevelChange(index, e)}
             />
@@ -423,12 +507,12 @@ function CharacterSheetForm() {
           </div>
         ))}
         <button className="btn" type="button" onClick={addProficiency}>
-          <text-pt>Adicionar Proficiência</text-pt>
+          <text-en>Add Proficiency</text-en>
         </button>
       </div>
 
       <button className="btnSubmit" type="submit">
-        <text-pt>Enviar</text-pt>
+        <text-en>Submit</text-en>
       </button>
     </form>
   );
