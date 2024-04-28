@@ -3,91 +3,71 @@
   flex-flow: column wrap;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
+  margin: auto;
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .container {
   display: flex;
   flex-flow: row wrap;
-  flex-grow: 1;
   min-width: 20%;
-  justify-content: center !important;
+  justify-content: space-around !important;
   align-items: flex-start;
-  gap: 32px;
+  gap: 16px;
   border: 1px solid black;
   border-radius: 10px;
-  padding: 32px 48px;
-  margin: 16px;
+  padding: 1rem;
+  margin: auto;
   width: 100%;
 }
 .box {
   display: flex;
-  flex-grow: 1;
   flex-flow: column nowrap;
-  align-items: center;
-  justify-content: center ;
   gap: 16px;
-  max-width: 200px;
-  min-width: 150px;
-  min-height: 400px;
-  padding: 8px;
+  padding: 1rem;
+  min-width: 280px;
 }
-.conditions{
-  max-width: 400px !important;
+.conditions {
+  max-width: 30% !important;
   flex-flow: row wrap !important;
-  min-width: 300px;
-  gap: px;
+  gap: 16px;
+  padding: 1rem;
 }
 
 .boxHeader {
-    display: flex;
-    flex-grow: 1;
-    width: 100%;
-    flex-flow: column nowrap;
-    align-items: start;
-    justify-content: center;
-    gap: 16px;
-    border: 1px solid black;
-    border-radius: 10px;
-    padding: 32px 48px;
-    margin: 16px;
-  }
+  display: flex;
+  
+  width: 100%;
+  flex-flow: column nowrap;
+  align-items: start;
+  justify-content: center;
+  gap: 1rem;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 1rem;
+  margin: auto;
+}
 
 .inputBox {
-  margin: auto 8px; 
-  max-width: 30% ;
+  width:80%;
 }
 .inputBoxHeader {
-    margin: auto 8px; 
-    flex-grow: 1;
-  }
-.inputLabel {
-  min-width: 40%;
+  width: 100%;
+  
 }
-.inputLabelHeader {
-    max-width: 20%;
-  }
 
 .inputAbilities {
   display: flex;
   flex-flow: row nowrap;
-  justify-content:space-between;
-  margin: auto 8px;
+  gap:4px;
+  justify-content: space-between;
   width: 100%;
 }
-.conditions .inputAbilities{
+.conditions .inputAbilities {
   justify-content: space-between;
-  max-width: 130px;
+ 
 }
 
-
-
-.btnSubmit {
-  max-width: 150px;
-  min-width: 112px;
-  margin: 24px auto;
-  padding: 4px 8px;
-}
-.btn {
-  margin: 36px;
-  padding: 4px 8px;
-}
